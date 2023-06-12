@@ -1,6 +1,0 @@
-{
-    "version": 2,
-    "name": "employee payment",
-    "builds" :[{"src": "api/**/*.js","use":"@versel/node"}],
-    "routes": [{"src":"/(.*)", "dest":"/app.js"}]
-}
