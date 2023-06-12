@@ -16,16 +16,22 @@ app.use(express.urlencoded({ extended: true }));
 
 
 // Connect to MongoDB using Mongoose
+const connectDB = async () => {
+    try {
 mongoose.connect(process.env.mongokey, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-})
-  .then(() => {
-    console.log('Connected to MongoDB');
-  })
-  .catch((error) => {
-    console.error('Error connecting to MongoDB:', error);
-  });
+});
+console.log('MongoDB connected');
+    } catch (error) {
+console.error(error.message);
+process.exit(1);
+
+    }
+};
+
+  
+
 
 // Create a schema for the Employee model
 const paymentSchema = new mongoose.Schema({
