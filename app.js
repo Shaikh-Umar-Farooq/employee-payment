@@ -16,7 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 
 
 // Connect to MongoDB using Mongoose
-mongoose.connect(mongokey, {
+mongoose.connect(process.env.mongokey, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
