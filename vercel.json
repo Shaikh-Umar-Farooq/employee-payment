@@ -1,6 +1,6 @@
 {
     "version": 2,
     "name": "employee payment",
-    "build" :[{"scr":"app.js", "use":"@versel/node"}],
+    "builds" :[{"scr":"app.js", "use":"@versel/node"}],
     "routes": [{"src":"/(.*)", "dest":"/app.js"}]
 }
