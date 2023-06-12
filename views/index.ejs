@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html data-theme="light">
+<head>
+  <title>Payment Tracking</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">  
+  <link rel="stylesheet" type="text/css" href="/public/css/style.css">
+  <style>
+    body{
+      padding: 50px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Payment Tracking</h1>
+  
+   <a href="/manage"> <button style="width: 300px;"> Manage Employees</button>
+   </a>
+  <article id="employee-cards">
+    <h1>All employee</h1>
+    <% employees.forEach(function(employee) { %>
+      <article class="employee-card">
+        <h2><%= employee.name %></h2>
+        <p>Total Amount Left: <%= employee.totalAmount %></p>
+        <a href="/employees/<%= employee._id %>"> <button class="outline" style="width: 150px;">View Details</button></a>
+      </article>
+    <% }); %>
+  </article>
+ 
+</body>
+</html>

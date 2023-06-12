@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html data-theme="light">
+<head>
+  <title>Employee Details</title>
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+  <link rel="stylesheet" href="/public/css/style.css">
+  <style>
+    .hide-first-row {
+    display: none;
+  }
+    body{
+      padding: 50px;
+    }
+
+    .green {
+      color: green;
+    }
+  
+    .red {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <h1>Employee Details</h1>
+  <div class="employee-details">
+    <article>
+    <h2 style="color: #1095c1;"><%= employee.name %></h2>
+    <p>Date of Joining: <%= employee.dateOfJoining.toDateString() %></p>
+    <p>Monthly Income: <%= employee.monthlyIncome %></p>
+  </article>
+  <article>
+    <h3>Payment History</h3>
+    <table>
+      <tr>
+        <th>Date</th>
+        <th>Amount</th>
+      </tr>
+      <% let isFirstRow = true; %>
+
+      <% employee.payments.forEach(function(payment, index) { %>
+        <tr >
+          <td class="<%= payment.type === 'income' ? 'green' : 'red' %>"><%= payment.date ? payment.date.toDateString() : 'N/A' %></td>
+          <td class="<%= payment.type === 'income' ? 'green' : 'red' %>">$<%= payment.amount %></td>
+        </tr>
+      <% }); %>
+      
+    </table>
+  </article>
+  <article>
+    <form action="/employees/<%= employee._id %>/payments" method="post">
+      <label for="amount">Payment Amount:</label>
+      <input type="number" name="amount" required>
+      <button type="submit">Make Payment</button>
+    </form>
+  </article>
+  </div>
+</body>
+<script>
+  // Get the table cell element
+const td = document.createElement('td');
+
+// Set the color style based on the payment type
+td.style.color = payment.type === 'income' ? 'green' : 'red';
+
+// Set the content of the cell
+td.textContent = `$${payment.amount}`;
+
+// Append the table cell to the table row
+tr.appendChild(td);
+
+</script>
+</html>

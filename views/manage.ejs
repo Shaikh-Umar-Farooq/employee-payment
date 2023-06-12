@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html data-theme="light">
+<head>
+  <title>Manage Employees</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+  <link rel="stylesheet" type="text/css" href="styles.css">
+  <style>
+    body{
+      padding: 50px;
+    }
+    ul{list-style: circle;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Manage Employees</h1>
+  <article>
+    <h3>Add new employee</h3>
+  <form action="/addEmployee" method="post">
+    <label for="name">Name:</label>
+    <input type="text" name="name" required>
+    <label for="dateOfJoining">Date of Joining:</label>
+    <input type="date" name="dateOfJoining" required>
+    <label for="monthlyIncome">Monthly Income:</label>
+    <input type="number" name="monthlyIncome" required>
+    <label for="initialPayment">Initial Payment:</label>
+    <input type="number" name="initialPayment" required>
+    <label for="payments">Payments:</label>
+    <textarea name="payments" required></textarea>
+    <button type="submit">Add Employee</button>
+  </form>
+</article>
+<article>
+  <h2>Existing Employees</h2>
+  <ul>
+    <% employees.forEach(function(employee) { %>
+      <article>
+      <li>
+        <h3 style="margin-bottom: 0;"><%= employee.name %></h3>
+          <%= employee.dateOfJoining.toDateString() %> - <%= employee.monthlyIncome %>
+        <form action="/deleteEmployee/<%= employee._id %>" method="post">
+          <button  style="width: 150px; background-color: rgb(134, 0, 0); border-style: none; margin-top: 10px;" type="submit">Delete</button>
+        </form>
+      </li>
+    </article>
+    <% }); %>
+  </ul>
+</article>
+</body>
+</html>
