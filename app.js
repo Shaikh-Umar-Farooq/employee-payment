@@ -165,9 +165,9 @@ function addSalaryToEmployees() {
             }
         );  
   }
-//   cron.schedule('*/1 * * * *', () => {
+  cron.schedule('0 0 */30 * *', () => {
     addSalaryToEmployees();
-//   });
+  });
 
   
 
