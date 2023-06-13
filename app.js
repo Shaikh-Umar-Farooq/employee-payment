@@ -211,8 +211,17 @@ function addSalaryToEmployees() {
       console.error('Error retrieving employees:', error);
     });
 }
+app.post('/addSalary', (req, res) => {
+  addSalaryToEmployees()
+    .then(() => {
+      res.status(200).json({ message: 'Salary added to all employees' });
+    })
+    .catch((error) => {
+      console.error('Error adding salary:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    });
+});
 
-setInterval(addSalaryToEmployees, 60000);
   
 
   
