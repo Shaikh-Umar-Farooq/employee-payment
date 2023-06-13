@@ -171,10 +171,11 @@ function addSalaryToEmployees() {
             }
         );  
   }
-// Schedule the task to add salary every day at 1 AM
-cron.schedule('0 1 * * *', () => {
+// Schedule the task to add salary every day at 01:06 AM
+cron.schedule('6 1 * * *', () => {
   addSalaryToEmployees();
 });
+
 
   
 
