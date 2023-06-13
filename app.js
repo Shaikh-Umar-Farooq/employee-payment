@@ -175,43 +175,47 @@ app.post('/addEmployee', async (req, res) => {
 // cron.schedule('10 1 * * *', () => {
 //   addSalaryToEmployees();
 // });
-
 function addSalaryToEmployees() {
-  const currentDate = new Date();
-  const currentDateOnly = new Date(currentDate.toISOString().split('T')[0]);
-  console.log(currentDateOnly);
-  console.log(currentDate);
+  return new Promise((resolve, reject) => {
+    const currentDate = new Date();
+    const currentDateOnly = new Date(currentDate.toISOString().split('T')[0]);
+    console.log(currentDateOnly);
+    console.log(currentDate);
 
-  Employee.find({
-    $expr: {
-      $eq: [
-        { $dayOfMonth: { date: '$dateOfJoining' } },
-        { $dayOfMonth: { date: currentDateOnly } },
-      ],
-    },
-  })
-    .then(async (employees) => {
-      for (const employee of employees) {
-        const { monthlyIncome } = employee;
-
-        employee.payments.push({
-          date: new Date(),
-          amount: monthlyIncome,
-          type: 'income',
-        });
-
-        employee.totalAmount += monthlyIncome;
-
-        await employee.save();
-      }
-
-      console.log('Salary added to all employees');
+    Employee.find({
+      $expr: {
+        $eq: [
+          { $dayOfMonth: { date: '$dateOfJoining' } },
+          { $dayOfMonth: { date: currentDateOnly } },
+        ],
+      },
     })
-    .catch((error) => {
-      console.error('Error retrieving employees:', error);
-    });
+      .then(async (employees) => {
+        for (const employee of employees) {
+          const { monthlyIncome } = employee;
+
+          employee.payments.push({
+            date: new Date(),
+            amount: monthlyIncome,
+            type: 'income',
+          });
+
+          employee.totalAmount += monthlyIncome;
+
+          await employee.save();
+        }
+
+        console.log('Salary added to all employees');
+        resolve();
+      })
+      .catch((error) => {
+        console.error('Error retrieving employees:', error);
+        reject(error);
+      });
+  });
 }
-app.post('/addSalary', (req, res) => {
+
+app.get('/addSalary', (req, res) => {
   addSalaryToEmployees()
     .then(() => {
       res.status(200).json({ message: 'Salary added to all employees' });
@@ -222,7 +226,6 @@ app.post('/addSalary', (req, res) => {
     });
 });
 
-  
 
   
 
