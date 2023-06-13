@@ -134,49 +134,85 @@ app.post('/addEmployee', async (req, res) => {
 
   // Define a function to add salary to all employees
 // Define the function to add salary to employees
-function addSalaryToEmployees() {
-    const currentDate = new Date();
-    const currentDateOnly = new Date(currentDate.toISOString().split('T')[0]);
-    console.log( currentDateOnly);
-    console.log( currentDate);
+// function addSalaryToEmployees() {
+//     const currentDate = new Date();
+//     const currentDateOnly = new Date(currentDate.toISOString().split('T')[0]);
+//     console.log( currentDateOnly);
+//     console.log( currentDate);
   
-    Employee.find({
-        $expr: {
-          $eq: [
-            { $dayOfMonth: { date: '$dateOfJoining' } },
-            { $dayOfMonth: { date: currentDateOnly } }
-          ]
-        }
+//     Employee.find({
+//         $expr: {
+//           $eq: [
+//             { $dayOfMonth: { date: '$dateOfJoining' } },
+//             { $dayOfMonth: { date: currentDateOnly } }
+//           ]
+//         }
+//     })
+//       .then((employees) => {
+
+//         employees.forEach(async (employee) => {
+//                     const { monthlyIncome } = employee;
+              
+//                     employee.payments.push({
+//                       date: new Date(),
+//                       amount: monthlyIncome,
+//                       type: 'income',
+//                     });
+              
+//                     employee.totalAmount += monthlyIncome;
+              
+//                     await employee.save();
+//                   });
+              
+//                   console.log('Salary added to all employees');
+//                 } )
+//         .catch((error) => {
+//             console.error('Error retrieving employees:', error);
+//             }
+//         );  
+//   }
+// // Schedule the task to add salary every day at 01:06 AM
+// cron.schedule('10 1 * * *', () => {
+//   addSalaryToEmployees();
+// });
+
+function addSalaryToEmployees() {
+  const currentDate = new Date();
+  const currentDateOnly = new Date(currentDate.toISOString().split('T')[0]);
+  console.log(currentDateOnly);
+  console.log(currentDate);
+
+  Employee.find({
+    $expr: {
+      $eq: [
+        { $dayOfMonth: { date: '$dateOfJoining' } },
+        { $dayOfMonth: { date: currentDateOnly } },
+      ],
+    },
+  })
+    .then(async (employees) => {
+      for (const employee of employees) {
+        const { monthlyIncome } = employee;
+
+        employee.payments.push({
+          date: new Date(),
+          amount: monthlyIncome,
+          type: 'income',
+        });
+
+        employee.totalAmount += monthlyIncome;
+
+        await employee.save();
+      }
+
+      console.log('Salary added to all employees');
     })
-      .then((employees) => {
+    .catch((error) => {
+      console.error('Error retrieving employees:', error);
+    });
+}
 
-        employees.forEach(async (employee) => {
-                    const { monthlyIncome } = employee;
-              
-                    employee.payments.push({
-                      date: new Date(),
-                      amount: monthlyIncome,
-                      type: 'income',
-                    });
-              
-                    employee.totalAmount += monthlyIncome;
-              
-                    await employee.save();
-                  });
-              
-                  console.log('Salary added to all employees');
-                } )
-        .catch((error) => {
-            console.error('Error retrieving employees:', error);
-            }
-        );  
-  }
-// Schedule the task to add salary every day at 01:06 AM
-cron.schedule('10 1 * * *', () => {
-  addSalaryToEmployees();
-});
-
-
+setInterval(addSalaryToEmployees, 60000);
   
 
   
