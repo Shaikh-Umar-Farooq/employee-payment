@@ -32,7 +32,9 @@
   </form>
 </article>
 <article>
-  <h2>Existing Employees</h2>
+  <details>
+    <summary style="color:black;">Existing Employees</summary>
+    <p></p>
   <ul>
     <% employees.forEach(function(employee) { %>
       <article>
@@ -46,6 +48,8 @@
     </article>
     <% }); %>
   </ul>
+</p>
+</details>
 </article>
 </body>
 </html>
